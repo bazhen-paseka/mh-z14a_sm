@@ -16,8 +16,8 @@
 *
 */
 
-#ifndef _H_
-#define _H_
+#ifndef MH_Z14_SM_H_INCLUDED
+#define MH_Z14_SM_H_INCLUDED
 
 	
 	/*
@@ -55,7 +55,7 @@
 	*                              FUNCTION PROTOTYPES
 	**************************************************************************
 	*/
-	
+	void MH_Z14A_Init(void);
+	void MH_Z14A_Main(void);
 
-
-#endif /* _H_ */
+#endif /* MH_Z14_SM_H_INCLUDED */
