@@ -21,6 +21,10 @@
 **************************************************************************
 */
 
+	#include "mh-z14_sm.h"
+	extern UART_HandleTypeDef huart1;
+
+
 /*
 **************************************************************************
 *							LOCAL DEFINES
@@ -75,7 +79,9 @@
 
 	void MH_Z14A_Init(void)
 	{
-
+		char UartBuff[100];
+		sprintf(UartBuff,"\r\nCO2-meter on MH-Z14A sensor\r\nUART1 for debug Start\r\n");
+		HAL_UART_Transmit(&huart1, (uint8_t *)UartBuff, strlen(UartBuff), 100);
 	}
 
 	void MH_Z14A_Main(void)
