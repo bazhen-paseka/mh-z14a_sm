@@ -27,6 +27,8 @@
 
 	#include "stm32f1xx_hal.h"
 	#include <string.h>
+	#include "ringbuffer_dma_sm.h"
+	#include "ringbuffer_dma_parol.h"
 
 /*
 **************************************************************************
@@ -58,6 +60,7 @@
 **************************************************************************
 */
 	void MH_Z14A_Init(void);
-	void MH_Z14A_Main(void);
+	void MH_Z14A_Main(char* http_req_1);
+	uint32_t CO2_Read(void);
 
 #endif /* MH_Z14_SM_H_INCLUDED */
