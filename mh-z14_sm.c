@@ -38,6 +38,7 @@
 	RingBuffer_DMA rx_buffer2;
 	#define CO2_BUFFER_SIZE 256
 	uint8_t co2_circular_buffer[CO2_BUFFER_SIZE];
+	static uint8_t time_flag_u8=0;
 /*
 **************************************************************************
 *							LOCAL CONSTANTS
@@ -100,10 +101,10 @@
 
 	}
 
-	void MH_Z14A_Main(char* http_req_1)
+	uint32_t MH_Z14A_Main(void)
 	{
 		char DataChar[100];
-		sprintf(DataChar,"ack CO2... ");
+		sprintf(DataChar,"ack MH-Z14A... ");
 		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
 
 		uint8_t CO2_Packet_Write[9] = {0xff,0x01,0x86,0x00,0x00,0x00,0x00,0x00,0x79};
@@ -111,16 +112,10 @@
 		HAL_Delay(1000);
 		uint32_t current_CO2_u32 = CO2_Read();
 
-		sprintf(DataChar,"CO2: %d ppm\r\n", (int)current_CO2_u32);
-		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+//		sprintf(DataChar,"CO2: %d ppm\r\n", (int)current_CO2_u32);
+//		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
 
-//		SizeChar = strlen(DataChar);
-//		LCD1602_Clear(&h1_lcd1602_fc113);
-//		LCD1602_Print_Line(&h1_lcd1602_fc113, DataChar, SizeChar);
-
-		//sprintf(DataChar,"CO2 = %d", 1998);
-		//LCD1602_Print_Line(&h1_lcd1602_fc113, DataChar, strlen(DataChar));
-		sprintf(http_req_1, "&field7=%d\r\n\r\n", (int)current_CO2_u32 );
+		return current_CO2_u32;
 	}
 
 
@@ -143,23 +138,21 @@ uint32_t CO2_Read(void)
 		{
 		uint8_t c = RingBuffer_DMA_GetByte(&rx_buffer2);
 
-		sprintf(DataChar_UART," %d", (int)c );	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
+		sprintf(DataChar_UART,"%d ", (int)c );	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
 
 		cmd_co2_char[icmd_co2_u32++] = c;
 		HAL_Delay(10);
 		}// while (rx_count--)
 	co2_u32 = cmd_co2_char[2] * 0xff +cmd_co2_char[3];
 
-	sprintf(DataChar_UART,"\r\nCO2= %d\r\n", (int)co2_u32 );	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
-
 	uint8_t CheckSum = getCheckSum(cmd_co2_char);
-	sprintf(DataChar_UART,"\r\nCheckSum= %d\r\n", (int)CheckSum );	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
+	sprintf(DataChar_UART,"\r\ncheckSum: %d\r\n", (int)CheckSum );	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
 
 	if (cmd_co2_char[8] == CheckSum)
-		sprintf(DataChar_UART,"CheckSum: Ok. Result= %d\r\n", (int)co2_u32);
+		sprintf(DataChar_UART,"checkSum Ok. Result: %d\r\n", (int)co2_u32);
 	else
 	{
-		sprintf(DataChar_UART,"CheckSum- ERROR. CO2=333\r\n");
+		sprintf(DataChar_UART,"checkSum Error: CO2=333\r\n");
 		co2_u32 = 333;
 	}
 	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar_UART, strlen(DataChar_UART), 100);
@@ -169,6 +162,19 @@ uint32_t CO2_Read(void)
 
 	return co2_u32;
 }
+//************************************************************************
+
+void SetTimeFlag(uint8_t _set_time_flag_u8)
+{
+	time_flag_u8 = _set_time_flag_u8;
+}
+//************************************************************************
+
+uint8_t GetTimeFlag(void)
+{
+	return time_flag_u8;
+}
+//************************************************************************
 
 /*
 **************************************************************************

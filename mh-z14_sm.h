@@ -60,7 +60,9 @@
 **************************************************************************
 */
 	void MH_Z14A_Init(void);
-	void MH_Z14A_Main(char* http_req_1);
+	uint32_t MH_Z14A_Main(void);
 	uint32_t CO2_Read(void);
+	void SetTimeFlag(uint8_t);
+	uint8_t GetTimeFlag(void);
 
 #endif /* MH_Z14_SM_H_INCLUDED */
