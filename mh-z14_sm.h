@@ -19,6 +19,11 @@
 #ifndef MH_Z14_SM_H_INCLUDED
 #define MH_Z14_SM_H_INCLUDED
 
+	//	pin13 ->	TX	->	PA3(RX)
+	//	pin14 ->	RX	->	PA2(TX)
+	//	pin15 ->	5V
+	//	pin_2 -> 	GND
+
 /*
 **************************************************************************
 *								INCLUDE FILES
@@ -27,6 +32,7 @@
 
 	#include "stm32f1xx_hal.h"
 	#include <string.h>
+	#include "stdio.h"
 	#include "ringbuffer_dma_sm.h"
 	#include "ringbuffer_dma_parol.h"
 
