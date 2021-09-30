@@ -35,6 +35,7 @@
 	#include "stdio.h"
 	#include "ringbuffer_dma_sm.h"
 	#include "ringbuffer_dma_parol.h"
+	#include "one-pin-debug-sm.h"
 
 /*
 **************************************************************************
@@ -65,10 +66,10 @@
 *                              FUNCTION PROTOTYPES
 **************************************************************************
 */
-	void MH_Z14A_Init(void);
-	uint32_t MH_Z14A_Main(void);
-	uint32_t CO2_Read(void);
-	void SetTimeFlag(uint8_t);
-	uint8_t GetTimeFlag(void);
+	void 		MH_Z14A_Init(	void	) ;
+	uint32_t 	MH_Z14A_Main(	void	) ;
+	uint32_t 	CO2_Read_u32(	void	) ;
+	void 		SetTimeFlag(	uint8_t	) ;
+	uint8_t 	GetTimeFlag(	void	) ;
 
 #endif /* MH_Z14_SM_H_INCLUDED */
